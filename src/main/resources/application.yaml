@@ -1,0 +1,8 @@
+server:
+  port: ${MP.BC.CLIENT.PORT}
+
+
+mp:
+  ethereum:
+    accountPrivateKey: ${MP.ETHEREUM.ACCOUNT.PRIVATE.KEY}
+    clientUrl: ${MP.ETHEREUM.CLIENT.URL}
