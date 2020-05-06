@@ -21,7 +21,7 @@ public class SensorContractClient {
     private final ETHPropertiesBean ethProperties;
 
     public Optional<Sensor> getSensorContractForAddress(String sensorContractAddress) {
-        Web3j web3j = Web3j.build(new HttpService("https://rinkeby.infura.io/v3/57551989585449249df0967552fd8bb6"));
+        Web3j web3j = Web3j.build(new HttpService(ethProperties.getClientUrl()));
         try {
             web3j.web3ClientVersion().send().getWeb3ClientVersion();
         } catch (IOException e) {
