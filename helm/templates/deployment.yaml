@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mp-bc-client.fullname" . }}
+  labels:
+  {{- include "mp-bc-client.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+  {{- include "mp-bc-client.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+      {{- include "mp-bc-client.selectorLabels" . | nindent 8 }}
+      annotations:
+        forceRecreate: {{ add .Values.global.recreationFlag .Values.recreationFlag | quote}}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: {{ required "A valid .Values.global.mpBCClientPortName entry required!" .Values.global.mpBCClientPortName }}
+              containerPort: {{ required "A valid .Values.global.mpBCClientPort entry required!" .Values.global.mpBCClientPort }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.path }}
+              port: {{ required "A valid .Values.global.mpBCClientPort entry required!" .Values.global.mpBCClientPort }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.path }}
+              port: {{ required "A valid .Values.global.mpBCClientPort entry required!" .Values.global.mpBCClientPort }}
+
+          env:
+            - name: MP_ETHEREUM_ACCOUNT_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mp-bc-client.fullname" . }}
+                  key: MP_ETHEREUM_ACCOUNT_PRIVATE_KEY
+
+            - name: MP_ETHEREUM_CLIENT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mp-bc-client.fullname" . }}
+                  key: MP_ETHEREUM_CLIENT_URL
+
+          envFrom:
+            - configMapRef:
+                name: {{ template "mp-bc-client.fullname" . }}
+
+          resources:
+      {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+    {{- toYaml . | nindent 8 }}
+  {{- end }}
