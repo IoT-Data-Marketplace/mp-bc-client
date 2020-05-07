@@ -3,7 +3,6 @@ package com.iotdatamp.mpbcclient.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iotdatamp.mpbcclient.clients.SensorContractClient;
 import com.iotdatamp.mpbcclient.contract.Sensor;
-import com.iotdatamp.mpbcclient.dto.Geolocation;
 import com.iotdatamp.mpbcclient.dto.SensorDTO;
 import com.iotdatamp.mpbcclient.dto.SensorStatus;
 import com.iotdatamp.mpbcclient.dto.SensorType;
@@ -34,12 +33,8 @@ public class SensorContractService {
                 .sensorContractAddress(sensorContractAddress)
                 .dataStreamEntityContractAddress(result.component1())
                 .sensorType(SensorType.values()[result.component2().intValue()])
-                .geolocation(
-                        Geolocation.builder()
-                                .latitude(result.component3())
-                                .longitude(result.component4())
-                                .build()
-                )
+                .latitude(Double.valueOf(result.component3()))
+                .longitude(Double.valueOf(result.component4()))
                 .sensorStatus(SensorStatus.values()[result.component5().intValue()])
                 .build();
 
