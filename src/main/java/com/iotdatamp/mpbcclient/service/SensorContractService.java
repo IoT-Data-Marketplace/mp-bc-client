@@ -11,6 +11,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tuples.generated.Tuple5;
 
 import java.math.BigInteger;
@@ -42,5 +43,17 @@ public class SensorContractService {
         log.info("Sensor fetched, values: " + mapper.writeValueAsString(sensorDTO));
 
         return ResponseEntity.ok().body(mapper.writeValueAsString(sensorDTO));
+    }
+
+    @SneakyThrows
+    public ResponseEntity<?> setSensorStatus(SensorDTO sensor) {
+        Sensor sensorContract = sensorContractClient.getSensorContractForAddress(sensor.getSensorContractAddress()).orElseThrow(Exception::new);
+
+        TransactionReceipt transferReceipt = sensorContract.setSensorStatus(BigInteger.valueOf(sensor.getSensorStatus().ordinal())).send();
+
+        log.info("Status for Sensor: ".concat(sensor.getSensorContractAddress()).concat(" set to: ").concat(sensor.getSensorStatus().toString())
+                .concat("\nTransaction Hash: ").concat(transferReceipt.getTransactionHash()));
+
+        return ResponseEntity.ok().body(transferReceipt.isStatusOK());
     }
 }
