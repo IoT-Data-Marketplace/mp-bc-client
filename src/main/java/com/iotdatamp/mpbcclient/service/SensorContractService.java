@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import org.web3j.tuples.generated.Tuple5;
+import org.web3j.tuples.generated.Tuple6;
 
 import java.math.BigInteger;
 
@@ -28,7 +28,7 @@ public class SensorContractService {
 
         Sensor sensor = sensorContractClient.getSensorContractForAddress(sensorContractAddress).orElseThrow(Exception::new);
 
-        Tuple5<String, BigInteger, String, String, BigInteger> result = sensor.describeSensor().send();
+        Tuple6<String, BigInteger, String, String, BigInteger, BigInteger> result = sensor.describeSensor().send();
 
         SensorDTO sensorDTO = SensorDTO.builder()
                 .sensorContractAddress(sensorContractAddress)
@@ -37,6 +37,7 @@ public class SensorContractService {
                 .latitude(Double.valueOf(result.component3()))
                 .longitude(Double.valueOf(result.component4()))
                 .sensorStatus(SensorStatus.values()[result.component5().intValue()])
+                .pricePerDataUnit(result.component5().intValue())
                 .build();
 
         ObjectMapper mapper = new ObjectMapper();
