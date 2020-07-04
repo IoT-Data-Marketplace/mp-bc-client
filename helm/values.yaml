@@ -22,7 +22,7 @@ global:
   namespaceName: ""
   recreationFlag: 1
   mpBCClientPort: 8070
-  mpBCClientPortName: bc-cl-8070
+  mpBCClientPortName: http-8070
 
 ethereumAccountPrivateKey: ""
 ethereumClientURL: ""
