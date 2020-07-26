@@ -57,4 +57,16 @@ public class SensorContractService {
 
         return ResponseEntity.ok().body(transferReceipt.isStatusOK());
     }
+
+
+    @SneakyThrows
+    public ResponseEntity<Boolean> isGivenEntitySensorOwner(String sensorContractAddress, String entityContractAddress) {
+        Sensor sensor = null;
+        try {
+            sensor = sensorContractClient.getSensorContractForAddress(sensorContractAddress).orElseThrow(Exception::new);
+        } catch (Exception e) {
+            return ResponseEntity.ok(false);
+        }
+        return ResponseEntity.ok(entityContractAddress.equalsIgnoreCase(sensor.getDataStreamEntityContractAddress().send()));
+    }
 }

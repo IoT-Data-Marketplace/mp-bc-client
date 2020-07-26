@@ -18,6 +18,11 @@ public class SensorController {
         return sensorService.getSensorForContractAddress(sensorContractAddress);
     }
 
+    @GetMapping(path = "/owner")
+    public ResponseEntity<Boolean> getSensorForContractAddress(@RequestParam String sensorContractAddress, @RequestParam String entityContractAddress) {
+        return sensorService.isGivenEntitySensorOwner(sensorContractAddress, entityContractAddress);
+    }
+
     @PostMapping(path = "/status")
     public ResponseEntity<?> setSensorStatus(@RequestBody SensorDTO sensor) {
         return sensorService.setSensorStatus(sensor);
