@@ -61,3 +61,8 @@ Create the name of the service account to use
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
+
+
+{{- define "ethereumClientURL" }}
+{{- printf "http://%s-mp-eth-node:%s" ( required "A valid .Values.global.namespaceName entry required!" .Values.global.namespaceName) (.Values.global.mpETHNodePort | toString) | quote}}
+{{- end }}

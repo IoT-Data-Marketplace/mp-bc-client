@@ -5,4 +5,6 @@ metadata:
   labels:
   {{ include "mp-bc-client.labels" . | nindent 4 }}
 data:
-  MP.BC.CLIENT.PORT: {{ required "A valid .Values.global.mpBCClientPort entry required!" .Values.global.mpBCClientPort | quote }}
+  MP_BC_CLIENT_PORT: {{ required "A valid .Values.global.mpBCClientPort entry required!" .Values.global.mpBCClientPort | quote }}
+  MP_LOGGING_LEVEL: {{ required "A valid .Values.loggingLevel entry required!" .Values.loggingLevel }}
+  MP_ETHEREUM_CLIENT_URL: {{ include "ethereumClientURL" . }}

@@ -40,12 +40,6 @@ spec:
                   name: {{ include "mp-bc-client.fullname" . }}
                   key: MP_ETHEREUM_ACCOUNT_PRIVATE_KEY
 
-            - name: MP_ETHEREUM_CLIENT_URL
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "mp-bc-client.fullname" . }}
-                  key: MP_ETHEREUM_CLIENT_URL
-
           envFrom:
             - configMapRef:
                 name: {{ template "mp-bc-client.fullname" . }}

@@ -21,11 +21,13 @@ recreationFlag: 1
 global:
   namespaceName: ""
   recreationFlag: 1
+  mpETHNodePort: 8545
   mpBCClientPort: 8070
   mpBCClientPortName: http-8070
 
+loggingLevel: info
+
 ethereumAccountPrivateKey: ""
-ethereumClientURL: ""
 
 service:
   type: ClusterIP
